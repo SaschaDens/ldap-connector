@@ -1,5 +1,5 @@
 # Ldap-connector
-Provides an solution for authentication users with LDAP for Laravel 4.1
+Provides an solution for authentication users with LDAP for Laravel 4.2.x
 
 ## Installation
 1. Install this package through Composer:
@@ -34,9 +34,9 @@ Provides an solution for authentication users with LDAP for Laravel 4.1
 
 ## Usage
 The LDAP plugin is an extension of the AUTH class and will act the same as normal usage with Eloquent driver.
-
+    
     ```php
-    if (Auth::attempt(array('email' => $email, 'password' => $password)))
+    if (Auth::attempt(array('username' => $email, 'password' => $password)))
     {
         return Redirect::intended('dashboard');
     }
