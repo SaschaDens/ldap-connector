@@ -5,7 +5,7 @@ Provides an solution for authentication users with LDAP for Laravel 4.2.x
 1. Install this package through Composer:
 
     ```js
-    composer require dsdevbe/ldap-connector:1.*
+    composer require dsdevbe/ldap-connector:2.*
     ```
 
 1. Change the authentication driver in the Laravel config to use the ldap driver. You can find this in the following file `app/config/auth.php`
