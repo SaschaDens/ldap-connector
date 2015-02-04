@@ -1,9 +1,9 @@
 <?php namespace Dsdevbe\LdapConnector;
 
 
-use Illuminate\Auth\UserInterface;
+use Illuminate\Contracts\Auth\Authenticatable;
 
-class LdapUser implements UserInterface
+class LdapUser implements Authenticatable
 {
 
     /**
@@ -74,8 +74,6 @@ class LdapUser implements UserInterface
     }
 
     /**
-     * Dynamically access the user's attributes.
-     *
      * @param  string $key
      * @return mixed
      */
@@ -85,8 +83,6 @@ class LdapUser implements UserInterface
     }
 
     /**
-     * Dynamically set an attribute on the user.
-     *
      * @param  string $key
      * @param  mixed $value
      * @return void
@@ -97,8 +93,6 @@ class LdapUser implements UserInterface
     }
 
     /**
-     * Dynamically check if a value is set on the user.
-     *
      * @param  string $key
      * @return bool
      */
@@ -108,8 +102,6 @@ class LdapUser implements UserInterface
     }
 
     /**
-     * Dynamically unset a value on the user.
-     *
      * @param  string $key
      * @return bool
      */

@@ -1,20 +1,21 @@
 # Ldap-connector
-Provides an solution for authentication users with LDAP for Laravel 4.2.x
+Provides an solution for authentication users with LDAP for Laravel 5.0.x. It uses ADLDAP library to create a bridge between Laravel and LDAP
 
 ## Installation
 1. Install this package through Composer:
 
     ```js
-    composer require dsdevbe/ldap-connector:2.*
+    composer require dsdevbe/ldap-connector:3.*
     ```
 
-1. Change the authentication driver in the Laravel config to use the ldap driver. You can find this in the following file `app/config/auth.php`
+1. Change the authentication driver in the Laravel config to use the ldap driver. You can find this in the following file `config/auth.php`
 
     ```php
     'driver' => 'ldap',
     ```
 1. Create a new configuration file `ldap.php` in the configuration folder of Laravel `app/config/ldap.php` and modify to your needs.
 
+For more detail of the configuration you can always check on [ADLAP documentation](http://adldap.sourceforge.net/wiki/doku.php?id=documentation_configuration)
     ```php
     <?php
 
@@ -22,11 +23,9 @@ Provides an solution for authentication users with LDAP for Laravel 4.2.x
         'account_suffix'        =>  "@domain.local",
         'domain_controllers'    =>  array("192.168.0.1", "dc02.domain.local"), // Load balancing domain controllers
         'base_dn'               =>  'DC=domain,DC=local',
-        'admin_username'        =>  'dummy',    // Just needs to be an valid account to query other users if they exists
-        'admin_password'        =>  'password'
     );
     ```
-1. Once this is done you arrived at the final step and you will need to add a service provider. Open `app/config/app.php`, and add a new item to the providers array.
+1. Once this is done you arrived at the final step and you will need to add a service provider. Open `config/app.php`, and add a new item to the providers array.
 	
 	```php
 	'Dsdevbe\LdapConnector\LdapConnectorServiceProvider'
