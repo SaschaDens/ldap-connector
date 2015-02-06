@@ -2,7 +2,7 @@
 
 use Illuminate\Auth\Guard;
 use Illuminate\Support\ServiceProvider;
-use LdapManager;
+use Auth;
 use Exception;
 
 class LdapConnectorServiceProvider extends ServiceProvider {
@@ -21,12 +21,10 @@ class LdapConnectorServiceProvider extends ServiceProvider {
 	 */
 	public function boot()
 	{
-		$this->package('dsdevbe/ldap-connector');
-
-        \Auth::extend('ldap', function($app) {
-            $provider = new LdapUserProvider($this->getConfig());
-            return new Guard($provider, $app['session.store']);
-        });
+		Auth::extend('ldap', function($app) {
+			$provider = new LdapUserProvider($this->getConfig());
+			return new Guard($provider, $app['session.store']);
+		});
 	}
 
 	/**
@@ -48,15 +46,17 @@ class LdapConnectorServiceProvider extends ServiceProvider {
 		return array('auth');
 	}
 
-    /**
-     * Get ldap configuration
-     *
-     * @return array
-     */
-    public function getConfig()
-    {
-        if(!$this->app['config']['ldap']) throw new Exception('LDAP config not found. Check if app/config/ldap.php exists.');
+	/**
+	 * Get ldap configuration
+	 *
+	 * @return array
+	 */
+	public function getConfig()
+	{
+		if(!$this->app['config']['ldap']) {
+			throw new Exception('LDAP config not found. Check if app/config/ldap.php exists.');
+		}
 
-        return $this->app['config']['ldap'];
-    }
+		return $this->app['config']['ldap'];
+	}
 }
