@@ -2,10 +2,13 @@
 Provides an solution for authentication users with LDAP for Laravel 5.0.x. It uses ADLDAP library to create a bridge between Laravel and LDAP
 
 ## Installation
-1. Install this package through Composer:
-
+1. Install this package through Composer for Laravel v5.0:
     ```js
     composer require dsdevbe/ldap-connector:3.*
+    ```
+    If you still want to use Ldap-connector for Laravel v4.2 please refer to the following package
+    ```js
+    composer require dsdevbe/ldap-connector:2.*
     ```
 
 1. Change the authentication driver in the Laravel config to use the ldap driver. You can find this in the following file `config/auth.php`
