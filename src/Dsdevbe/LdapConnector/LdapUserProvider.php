@@ -79,8 +79,12 @@ class LdapUserProvider implements UserProviderInterface {
      */
     public function retrieveByCredentials(array $credentials)
     {
-        if($this->adldap->user()->info($credentials['username']))
+        if($userInfo = $this->adldap->user()->info($credentials['username']))
         {
+            $userInfo = $userInfo[0];
+            foreach($userInfo as $u=>$a){
+                $credentials[$u]=$a[0];
+            }
             return new LdapUser($credentials);
         }
     }
