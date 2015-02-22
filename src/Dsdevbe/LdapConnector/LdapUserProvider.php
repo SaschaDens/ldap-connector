@@ -1,20 +1,10 @@
 <?php namespace Dsdevbe\LdapConnector;
 
-use Exception;
 use adLDAP\adLDAP;
-use adLDAP\collections\adLDAPUserCollection;
-use adLDAP\adLDAPException;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\UserProvider as UserProviderInterface;
 
 class LdapUserProvider implements UserProviderInterface {
-
-    /**
-     * Configuration to connect to LDAP.
-     *
-     * @var string
-     */
-    protected $config;
 
     /**
      * Stores connection to LDAP.
@@ -31,8 +21,7 @@ class LdapUserProvider implements UserProviderInterface {
      */
     public function __construct($config)
     {
-        $this->config = $config;
-        $this->connectLdap();
+        $this->adldap = new adLDAP($config);
     }
 
     /**
@@ -43,11 +32,7 @@ class LdapUserProvider implements UserProviderInterface {
      */
     public function retrieveById($identifier)
     {
-        $info = $this->adldap->user()->infoCollection($identifier);
-        if($info)
-        {
-            return new LdapUser($this->mapCollectionToArray($info));
-        }
+        // TODO: Implement retrieveById() method.
     }
 
     /**
@@ -79,12 +64,13 @@ class LdapUserProvider implements UserProviderInterface {
      */
     public function retrieveByCredentials(array $credentials)
     {
-        if($userInfo = $this->adldap->user()->info($credentials['username']))
-        {
-            $userInfo = $userInfo[0];
-            foreach($userInfo as $u=>$a){
-                $credentials[$u]=$a[0];
+        if ($this->adldap->authenticate($credentials['username'], $credentials['password'])) {
+            $userInfo = $this->adldap->user()->info($credentials['username'], array('*'))[0];
+
+            foreach($userInfo as $key => $value){
+                $credentials[$key] = $value[0];
             }
+
             return new LdapUser($credentials);
         }
     }
@@ -95,38 +81,6 @@ class LdapUserProvider implements UserProviderInterface {
         $password = $credentials['password'];
 
         return $this->adldap->authenticate($username, $password);
-    }
-
-    /**
-     * @param adLDAPUserCollection $collection
-     * @return array
-     */
-    public function mapCollectionToArray(adLDAPUserCollection $collection)
-    {
-        $arr = array(
-            'username'      =>  $collection->samaccountname,
-            'displayname'   =>  $collection->displayname,
-            'email'         =>  $collection->mail,
-            'memberof'      =>  $collection->memberof
-        );
-
-        return $arr;
-    }
-
-    /**
-     * Connect to LDAP
-     *
-     * @throws \Exception
-     */
-    public function connectLdap()
-    {
-        try
-        {
-            $this->adldap = new adLDAP($this->config);
-        } catch(adLDAPException $e)
-        {
-            throw new Exception($e->getMessage());
-        }
     }
 
 }

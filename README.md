@@ -16,32 +16,29 @@ Provides an solution for authentication users with LDAP for Laravel 5.0.x. It us
     ```php
     'driver' => 'ldap',
     ```
-1. Create a new configuration file `ldap.php` in the configuration folder of Laravel `app/config/ldap.php` and modify to your needs.
-
-For more detail of the configuration you can always check on [ADLAP documentation](http://adldap.sourceforge.net/wiki/doku.php?id=documentation_configuration)
-    ```php
-    <?php
-
+1. Create a new configuration file `ldap.php` in the configuration folder of Laravel `app/config/ldap.php` and modify to your needs. For more detail of the configuration you can always check on [ADLAP documentation](http://adldap.sourceforge.net/wiki/doku.php?id=documentation_configuration)
+    
+    ```
     return array(
-        'account_suffix'        =>  "@domain.local",
-        'domain_controllers'    =>  array("192.168.0.1", "dc02.domain.local"), // Load balancing domain controllers
-        'base_dn'               =>  'DC=domain,DC=local',
+    	'account_suffix'=>  "@domain.local",
+    	'domain_controllers'=>  array("192.168.0.1", "dc02.domain.local"), // Load balancing domain controllers
+    	'base_dn'   =>  'DC=domain,DC=local',
     );
     ```
 1. Once this is done you arrived at the final step and you will need to add a service provider. Open `config/app.php`, and add a new item to the providers array.
 	
-	```php
+	```
 	'Dsdevbe\LdapConnector\LdapConnectorServiceProvider'
 	```
 
 ## Usage
 The LDAP plugin is an extension of the AUTH class and will act the same as normal usage with Eloquent driver.
     
-    ```php
+    ```
     if (Auth::attempt(array('username' => $email, 'password' => $password)))
     {
         return Redirect::intended('dashboard');
     }
     ```
 
-You can find more examples on [Laravel Auth Documentation](http://laravel.com/docs/security#authenticating-users) on using the `Auth::` function.
+You can find more examples on [Laravel Auth Documentation](http://laravel.com/docs/master/authentication) on using the `Auth::` function.
