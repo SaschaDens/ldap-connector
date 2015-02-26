@@ -32,7 +32,16 @@ class LdapUserProvider implements UserProviderInterface {
      */
     public function retrieveById($identifier)
     {
-        // TODO: Implement retrieveById() method.
+        $userInfo = $this->adldap->user()->info($identifier, array('*'))[0];
+		
+		$credentials = array();
+		$credentials['username'] = $identifier;
+		
+		foreach($userInfo as $key => $value){
+			$credentials[$key] = $value[0];
+		}
+
+        return new LdapUser($credentials);
     }
 
     /**
