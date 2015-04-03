@@ -1,3 +1,6 @@
+# Package abandoned
+This package will no longer be maintained due to the lack of time.
+
 # Ldap-connector
 Provides an solution for authentication users with LDAP for Laravel 5.0.x. It uses ADLDAP library to create a bridge between Laravel and LDAP
 
