@@ -37,7 +37,7 @@ Provides an solution for authentication users with LDAP for Laravel 5.0.x. It us
 ## Usage
 The LDAP plugin is an extension of the AUTH class and will act the same as normal usage with Eloquent driver.
     
-    ```
+    ```php
     if (Auth::attempt(array('username' => $email, 'password' => $password)))
     {
         return Redirect::intended('dashboard');
