@@ -1,95 +1,79 @@
 <?php namespace Dsdevbe\LdapConnector;
 
-use adLDAP\adLDAP;
+use Dsdevbe\LdapConnector\Adapter\LdapInterface;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\UserProvider as UserProviderInterface;
 
-class LdapUserProvider implements UserProviderInterface {
-
+class LdapUserProvider implements UserProviderInterface
+{
     /**
-     * Stores connection to LDAP.
-     *
-     * @var adLDAP
+     * @var LdapInterface;
      */
-    protected $adldap;
+    protected $_adapter;
 
-    /**
-     * Creates a new LdapUserProvider and connect to Ldap
-     *
-     * @param array $config
-     * @return void
-     */
-    public function __construct($config)
+    public function __construct(LdapInterface $adapter)
     {
-        $this->adldap = new adLDAP($config);
+        $this->_adapter = $adapter;
     }
 
     /**
      * Retrieve a user by their unique identifier.
      *
      * @param  mixed $identifier
-     * @return Authenticatable
+     * @return \Illuminate\Contracts\Auth\Authenticatable|null
      */
     public function retrieveById($identifier)
     {
-        $userInfo = $this->adldap->user()->info($identifier, array('*'))[0];
-		
-		$credentials = array();
-		$credentials['username'] = $identifier;
-		
-		foreach($userInfo as $key => $value){
-			$credentials[$key] = $value[0];
-		}
-
-        return new LdapUser($credentials);
+        return $this->_adapter->getUserInfo($identifier);
     }
 
     /**
-     * Retrieve a user by by their unique identifier and "remember me" token.
+     * Retrieve a user by their unique identifier and "remember me" token.
      *
      * @param  mixed $identifier
      * @param  string $token
-     * @return Authenticatable|null
+     * @return \Illuminate\Contracts\Auth\Authenticatable|null
      */
     public function retrieveByToken($identifier, $token)
     {
-        // TODO: Implement retrieveByToken() method.
+        return $this->_adapter->getUserInfo($identifier);
     }
 
     /**
-     * @param Authenticatable $user
-     * @param string $token
+     * Update the "remember me" token for the given user in storage.
+     *
+     * @param  \Illuminate\Contracts\Auth\Authenticatable $user
+     * @param  string $token
+     * @return void
      */
     public function updateRememberToken(Authenticatable $user, $token)
     {
-        // TODO: Implement updateRememberToken() method.
+        $user->setRememberToken($token);
     }
 
     /**
      * Retrieve a user by the given credentials.
      *
      * @param  array $credentials
-     * @return Authenticatable|null
+     * @return \Illuminate\Contracts\Auth\Authenticatable|null
      */
     public function retrieveByCredentials(array $credentials)
-    {
-        if ($this->adldap->authenticate($credentials['username'], $credentials['password'])) {
-            $userInfo = $this->adldap->user()->info($credentials['username'], array('*'))[0];
-
-            foreach($userInfo as $key => $value){
-                $credentials[$key] = $value[0];
-            }
-
-            return new LdapUser($credentials);
-        }
-    }
-
-    public function validateCredentials(Authenticatable $user, array $credentials)
     {
         $username = $credentials['username'];
         $password = $credentials['password'];
 
-        return $this->adldap->authenticate($username, $password);
+        return ($this->_adapter->connect($username, $password)) ? $this->_adapter->getUserInfo($username) : null;
     }
 
+    /**
+     * Validate a user against the given credentials.
+     *
+     * @param  \Illuminate\Contracts\Auth\Authenticatable $user
+     * @param  array $credentials
+     * @return bool
+     */
+    public function validateCredentials(Authenticatable $user, array $credentials)
+    {
+        return $this->_adapter->connect($credentials['username'], $credentials['password']);
+    }
 }
