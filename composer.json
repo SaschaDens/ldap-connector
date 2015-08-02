@@ -1,12 +1,12 @@
 {
     "name": "dsdevbe/ldap-connector",
     "description": "Easily authenticate with LDAP in Laravel",
-    "homepage": "https://github.com/dsdevbe/ldap-connector",
+    "homepage": "https://github.com/SaschaDens/ldap-connector",
     "keywords": ["Laravel", "Ldap"],
     "license": "MIT",
     "authors": [
         {
-            "name": "Dsdevbe",
+            "name": "SaschaDens",
             "email": "dens.sascha@gmail.com"
         }
     ],
