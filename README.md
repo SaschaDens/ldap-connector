@@ -1,14 +1,15 @@
 # Ldap-connector
+[![Build Status](https://travis-ci.org/SaschaDens/ldap-connector.svg)](https://travis-ci.org/SaschaDens/ldap-connector)
+[![Latest Stable Version](https://poser.pugx.org/dsdevbe/ldap-connector/v/stable)](https://packagist.org/packages/dsdevbe/ldap-connector)
+[![Total Downloads](https://poser.pugx.org/dsdevbe/ldap-connector/downloads)](https://packagist.org/packages/dsdevbe/ldap-connector)
+[![License](https://poser.pugx.org/dsdevbe/ldap-connector/license)](https://packagist.org/packages/dsdevbe/ldap-connector)
+
 Provides an solution for authentication users with LDAP for Laravel 5.x. It uses ADLDAP 4.0 library forked on [Adldap2](https://github.com/Adldap2/Adldap2) to create a bridge between Laravel and LDAP
 
 ## Installation
 1. Install this package through Composer for Laravel v5.x:
     ```js
     composer require dsdevbe/ldap-connector:3.*
-    ```
-    If you still want to use Ldap-connector for Laravel v4.2 please refer to the following package
-    ```js
-    composer require dsdevbe/ldap-connector:2.*
     ```
 
 1. Change the authentication driver in the Laravel config to use the ldap driver. You can find this in the following file `config/auth.php`
@@ -40,7 +41,7 @@ Provides an solution for authentication users with LDAP for Laravel 5.x. It uses
 1. Once this is done you arrived at the final step and you will need to add a service provider. Open `config/app.php`, and add a new item to the providers array.
 	
 	```
-	'Dsdevbe\LdapConnector\LdapConnectorServiceProvider'
+	'Dsdevbe\LdapConnector\LdapConnectorServiceProvider::class'
 	```
 
 ## Usage
@@ -52,5 +53,8 @@ if (Auth::attempt(array('username' => $email, 'password' => $password)))
 	return Redirect::intended('dashboard');
 }
 ```
-
 You can find more examples on [Laravel Auth Documentation](http://laravel.com/docs/master/authentication) on using the `Auth::` function.
+
+### Ldap Groups
+- `Auth::user()->getGroups()` returns `array` with groups the current user belongs to. 
+- `Auth::user()->inGroup('GROUPNAME')` returns `boolean` if user belongs to `GROUPNAME`
