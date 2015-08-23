@@ -1,4 +1,5 @@
 <?php
+
 namespace Dsdevbe\LdapConnector;
 
 use Auth;
@@ -8,7 +9,6 @@ use Illuminate\Support\ServiceProvider;
 
 class LdapConnectorServiceProvider extends ServiceProvider
 {
-
     /**
      * Indicates if loading of the provider is deferred.
      *
@@ -40,7 +40,7 @@ class LdapConnectorServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $ldapConfig = __DIR__ . '/Config/ldap.php';
+        $ldapConfig = __DIR__.'/Config/ldap.php';
         $this->publishConfig($ldapConfig);
     }
 
@@ -51,18 +51,18 @@ class LdapConnectorServiceProvider extends ServiceProvider
      */
     public function provides()
     {
-        return array('auth');
+        return ['auth'];
     }
 
     protected function publishConfig($configPath)
     {
-        $this->publishes(array(
-            $configPath => config_path('ldap.php')
-        ));
+        $this->publishes([
+            $configPath => config_path('ldap.php'),
+        ]);
     }
 
     /**
-     * Get ldap configuration
+     * Get ldap configuration.
      *
      * @return array
      */
@@ -73,6 +73,7 @@ class LdapConnectorServiceProvider extends ServiceProvider
 
     /**
      * @param $pluginName
+     *
      * @return array
      */
     public function getLdapAdapterConfig($pluginName)

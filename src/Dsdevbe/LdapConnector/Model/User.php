@@ -1,4 +1,5 @@
 <?php
+
 namespace Dsdevbe\LdapConnector\Model;
 
 use Illuminate\Contracts\Auth\Authenticatable;
@@ -64,7 +65,8 @@ class User implements Authenticatable
     /**
      * Set the token value for the "remember me" session.
      *
-     * @param  string $value
+     * @param string $value
+     *
      * @return void
      */
     public function setRememberToken($value)
@@ -97,5 +99,4 @@ class User implements Authenticatable
     {
         return in_array($groupName, $this->_groups);
     }
-
 }

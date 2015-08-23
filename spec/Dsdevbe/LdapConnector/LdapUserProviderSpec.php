@@ -4,21 +4,20 @@ namespace spec\Dsdevbe\LdapConnector;
 
 use Dsdevbe\LdapConnector\Adapter\LdapInterface;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class LdapUserProviderSpec extends ObjectBehavior
 {
-    function let(LdapInterface $interface)
+    public function let(LdapInterface $interface)
     {
         $this->beConstructedWith($interface);
     }
 
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType('Dsdevbe\LdapConnector\LdapUserProvider');
     }
 
-    function it_validate_user_by_credentials(LdapInterface $interface)
+    public function it_validate_user_by_credentials(LdapInterface $interface)
     {
         $user = [
             'username' => 'john.doe@example.com',
@@ -29,7 +28,7 @@ class LdapUserProviderSpec extends ObjectBehavior
         $this->retrieveByCredentials($user);
     }
 
-    function it_retrieves_user_by_id(LdapInterface $interface)
+    public function it_retrieves_user_by_id(LdapInterface $interface)
     {
         $identifier = 'john.doe@example.com';
 
