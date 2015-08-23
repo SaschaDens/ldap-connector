@@ -12,7 +12,7 @@ class Adldap implements LdapInterface
 
     protected $_password;
 
-    protected function _mapDataToUserModel($username, array $groups)
+    protected function mapDataToUserModel($username, array $groups)
     {
         $model = new UserModel([
             'username' => $username,
@@ -61,6 +61,6 @@ class Adldap implements LdapInterface
         }
 
         $groups = $this->_ldap->user()->groups($username);
-        return $this->_mapDataToUserModel($username, $groups);
+        return $this->mapDataToUserModel($username, $groups);
     }
 }
