@@ -1,4 +1,5 @@
 <?php
+
 namespace Dsdevbe\LdapConnector\Adapter;
 
 use adLDAP\adLDAP as adLDAPService;
@@ -19,6 +20,7 @@ class Adldap implements LdapInterface
             'password' => $this->_password,
         ]);
         $model->setGroups($groups);
+
         return $model;
     }
 
@@ -30,6 +32,7 @@ class Adldap implements LdapInterface
     /**
      * @param String $username
      * @param String $password
+     *
      * @return bool
      */
     public function connect($username, $password)
@@ -50,6 +53,7 @@ class Adldap implements LdapInterface
 
     /**
      * @param String $username
+     *
      * @return UserModel
      */
     public function getUserInfo($username)
@@ -57,10 +61,11 @@ class Adldap implements LdapInterface
         $user = $this->_ldap->user()->info($username);
 
         if (!$user) {
-            return null;
+            return;
         }
 
         $groups = $this->_ldap->user()->groups($username);
+
         return $this->mapDataToUserModel($username, $groups);
     }
 }
