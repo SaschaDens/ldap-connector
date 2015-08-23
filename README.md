@@ -21,7 +21,7 @@ Provides an solution for authentication users with LDAP for Laravel 5.x. It uses
     
     ```
     return array(
-    	'plugins' => array(
+        'plugins' => array(
             'adldap' => array(
                 'account_suffix'=>  '@domain.local',
                 'domain_controllers'=>  array(
@@ -39,21 +39,31 @@ Provides an solution for authentication users with LDAP for Laravel 5.x. It uses
     Please note that the fields 'admin_username' and 'admin_password' are required for session persistance!
     
 1. Once this is done you arrived at the final step and you will need to add a service provider. Open `config/app.php`, and add a new item to the providers array.
-	
-	```
-	'Dsdevbe\LdapConnector\LdapConnectorServiceProvider::class'
-	```
+    
+    ```
+    'Dsdevbe\LdapConnector\LdapConnectorServiceProvider::class'
+    ```
 
 ## Usage
-The LDAP plugin is an extension of the AUTH class and will act the same as normal usage with Eloquent driver.
+The LDAP plugin is an extension of the Auth class and will act the same as normal usage with Eloquent driver.
     
 ```php
-if (Auth::attempt(array('username' => $email, 'password' => $password)))
+if (Auth::attempt(array('username' => $username, 'password' => $password)))
 {
-	return Redirect::intended('dashboard');
+    return Redirect::intended('dashboard');
 }
 ```
 You can find more examples on [Laravel Auth Documentation](http://laravel.com/docs/master/authentication) on using the `Auth::` function.
+
+### Use AuthController
+If you want to use the authentication controller that ships with Laravel you will need to change the following files.
+By default `App\Http\Controllers\Auth\AuthController` checks for the `email` field if nothing is provided. To overwrite this value add the following line in the `AuthController`.
+
+```php
+protected $username = 'username';
+```
+
+Laravel documentation: [Authentication Quickstart](http://laravel.com/docs/master/authentication#authentication-quickstart)
 
 ### Ldap Groups
 - `Auth::user()->getGroups()` returns `array` with groups the current user belongs to. 
