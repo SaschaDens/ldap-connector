@@ -11,7 +11,12 @@ Provides an solution for authentication users with LDAP for Laravel 5.x. It uses
     ```js
     composer require dsdevbe/ldap-connector:3.*
     ```
-
+    
+1. Add the service provider in the app configuration by opening `config/app.php`, and add a new item to the providers array.
+       
+       ```
+       Dsdevbe\LdapConnector\LdapConnectorServiceProvider::class
+       ```
 1. Change the authentication driver in the Laravel config to use the ldap driver. You can find this in the following file `config/auth.php`
 
     ```php
@@ -38,12 +43,6 @@ Provides an solution for authentication users with LDAP for Laravel 5.x. It uses
     
     Please note that the fields 'admin_username' and 'admin_password' are required for session persistance!
     
-1. Once this is done you arrived at the final step and you will need to add a service provider. Open `config/app.php`, and add a new item to the providers array.
-    
-    ```
-    'Dsdevbe\LdapConnector\LdapConnectorServiceProvider::class'
-    ```
-
 ## Usage
 The LDAP plugin is an extension of the Auth class and will act the same as normal usage with Eloquent driver.
     
@@ -68,3 +67,4 @@ Laravel documentation: [Authentication Quickstart](http://laravel.com/docs/maste
 ### Ldap Groups
 - `Auth::user()->getGroups()` returns `array` with groups the current user belongs to. 
 - `Auth::user()->inGroup('GROUPNAME')` returns `boolean` if user belongs to `GROUPNAME`
+
