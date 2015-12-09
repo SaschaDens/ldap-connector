@@ -68,3 +68,8 @@ Laravel documentation: [Authentication Quickstart](http://laravel.com/docs/maste
 - `Auth::user()->getGroups()` returns `array` with groups the current user belongs to. 
 - `Auth::user()->inGroup('GROUPNAME')` returns `boolean` if user belongs to `GROUPNAME`
 
+### Ldap User Information
+- `Auth::user()->getUsername()` returns authenticated users username.
+- `Auth::user()->getFirstname()` returns authenticated users first name.
+- `Auth::user()->getLastname()` returns authenticated users last name.
+- `Auth::user()->getEmail()` returns authenticated users email address.
