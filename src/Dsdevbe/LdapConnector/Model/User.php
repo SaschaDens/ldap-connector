@@ -7,17 +7,17 @@ use Illuminate\Contracts\Auth\Authenticatable;
 class User implements Authenticatable
 {
     /**
-     * @var String
+     * @var string
      */
     protected $_authIdentifier;
 
     /**
-     * @var String
+     * @var string
      */
     protected $_authPassword;
 
     /**
-     * @var String
+     * @var string
      */
     protected $_rememberToken;
 
@@ -145,7 +145,7 @@ class User implements Authenticatable
      */
     public function getEmail()
     {
-        return $this->_user['mail'];
+        return $this->_user['email'];
     }
 
 }

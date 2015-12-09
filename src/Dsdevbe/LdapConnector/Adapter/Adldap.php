@@ -36,8 +36,8 @@ class Adldap implements LdapInterface
     }
 
     /**
-     * @param String $username
-     * @param String $password
+     * @param string $username
+     * @param string $password
      *
      * @return bool
      */
@@ -58,13 +58,13 @@ class Adldap implements LdapInterface
     }
 
     /**
-     * @param String $username
+     * @param string $username
      *
      * @return UserModel
      */
     public function getUserInfo($username)
     {
-        $user = $this->_ldap->user()->infoCollection($username, array('samaccountname','givenname','sn','mail'));
+        $user = $this->_ldap->user()->infoCollection($username, ['samaccountname','givenname','sn','mail']);
 
         if (!$user) {
             return;
