@@ -3,6 +3,7 @@
 namespace Dsdevbe\LdapConnector\Adapter;
 
 use adLDAP\adLDAP as adLDAPService;
+use adLDAP\collections\adLDAPUserCollection as adLDAPUserCollection;
 use Dsdevbe\LdapConnector\Model\User as UserModel;
 
 class Adldap implements LdapInterface
@@ -13,13 +14,19 @@ class Adldap implements LdapInterface
 
     protected $_password;
 
-    protected function mapDataToUserModel($username, array $groups)
+    protected function mapDataToUserModel(adLDAPUserCollection $user, array $groups)
     {
         $model = new UserModel([
-            'username' => $username,
+            'username' => $user->samaccountname,
             'password' => $this->_password,
         ]);
         $model->setGroups($groups);
+        $model->setUserInfo([
+            'username'  => $user->samaccountname,
+            'firstname' => $user->givenname,
+            'lastname'  => $user->sn,
+            'email'     => $user->mail,
+        ]);
 
         return $model;
     }
@@ -30,8 +37,8 @@ class Adldap implements LdapInterface
     }
 
     /**
-     * @param String $username
-     * @param String $password
+     * @param string $username
+     * @param string $password
      *
      * @return bool
      */
@@ -48,17 +55,17 @@ class Adldap implements LdapInterface
      */
     public function isConnected()
     {
-        return !!$this->_ldap->getLdapBind();
+        return (bool) $this->_ldap->getLdapBind();
     }
 
     /**
-     * @param String $username
+     * @param string $username
      *
      * @return UserModel
      */
     public function getUserInfo($username)
     {
-        $user = $this->_ldap->user()->info($username);
+        $user = $this->_ldap->user()->infoCollection($username, ['samaccountname', 'givenname', 'sn', 'mail']);
 
         if (!$user) {
             return;
@@ -66,6 +73,6 @@ class Adldap implements LdapInterface
 
         $groups = $this->_ldap->user()->groups($username);
 
-        return $this->mapDataToUserModel($username, $groups);
+        return $this->mapDataToUserModel($user, $groups);
     }
 }

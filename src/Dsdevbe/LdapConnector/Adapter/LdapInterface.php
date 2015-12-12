@@ -7,8 +7,8 @@ use Dsdevbe\LdapConnector\Model\User as UserModel;
 interface LdapInterface
 {
     /**
-     * @param String $username
-     * @param String $password
+     * @param string $username
+     * @param string $password
      *
      * @return bool
      */

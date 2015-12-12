@@ -7,17 +7,17 @@ use Illuminate\Contracts\Auth\Authenticatable;
 class User implements Authenticatable
 {
     /**
-     * @var String
+     * @var string
      */
     protected $_authIdentifier;
 
     /**
-     * @var String
+     * @var string
      */
     protected $_authPassword;
 
     /**
-     * @var String
+     * @var string
      */
     protected $_rememberToken;
 
@@ -25,6 +25,11 @@ class User implements Authenticatable
      * @var array
      */
     protected $_groups;
+
+    /**
+     * @var array
+     */
+    protected $_user;
 
     public function __construct(array $attributes)
     {
@@ -95,8 +100,51 @@ class User implements Authenticatable
         $this->_groups = $groups;
     }
 
+    /**
+     * @return bool
+     */
     public function inGroup($groupName)
     {
         return in_array($groupName, $this->_groups);
+    }
+
+    /**
+     * @param array $user
+     */
+    public function setUserInfo(array $user)
+    {
+        $this->_user = $user;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUsername()
+    {
+        return $this->_user['username'];
+    }
+
+    /**
+     * @return string
+     */
+    public function getFirstname()
+    {
+        return $this->_user['firstname'];
+    }
+
+    /**
+     * @return string
+     */
+    public function getLastname()
+    {
+        return $this->_user['lastname'];
+    }
+
+    /**
+     * @return string
+     */
+    public function getEmail()
+    {
+        return $this->_user['email'];
     }
 }
