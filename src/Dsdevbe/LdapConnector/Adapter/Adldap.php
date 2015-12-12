@@ -3,6 +3,7 @@
 namespace Dsdevbe\LdapConnector\Adapter;
 
 use adLDAP\adLDAP as adLDAPService;
+use adLDAP\collections\adLDAPUserCollection as adLDAPUserCollection;
 use Dsdevbe\LdapConnector\Model\User as UserModel;
 
 class Adldap implements LdapInterface
@@ -13,7 +14,7 @@ class Adldap implements LdapInterface
 
     protected $_password;
 
-    protected function mapDataToUserModel($user, array $groups)
+    protected function mapDataToUserModel(adLDAPUserCollection $user, array $groups)
     {
         $model = new UserModel([
             'username' => $user->samaccountname,
@@ -54,7 +55,7 @@ class Adldap implements LdapInterface
      */
     public function isConnected()
     {
-        return !!$this->_ldap->getLdapBind();
+        return (bool) $this->_ldap->getLdapBind();
     }
 
     /**
@@ -64,7 +65,7 @@ class Adldap implements LdapInterface
      */
     public function getUserInfo($username)
     {
-        $user = $this->_ldap->user()->infoCollection($username, ['samaccountname','givenname','sn','mail']);
+        $user = $this->_ldap->user()->infoCollection($username, ['samaccountname', 'givenname', 'sn', 'mail']);
 
         if (!$user) {
             return;

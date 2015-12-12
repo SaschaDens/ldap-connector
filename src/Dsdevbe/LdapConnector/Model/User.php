@@ -147,5 +147,4 @@ class User implements Authenticatable
     {
         return $this->_user['email'];
     }
-
 }

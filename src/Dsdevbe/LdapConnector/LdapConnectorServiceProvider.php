@@ -23,7 +23,7 @@ class LdapConnectorServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Auth::extend('ldap', function ($app) {
+        Auth::extend('ldap', function($app) {
             $ldap = new Adldap(
                 $this->getLdapAdapterConfig('adldap')
             );
@@ -40,7 +40,7 @@ class LdapConnectorServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $ldapConfig = __DIR__.'/Config/ldap.php';
+        $ldapConfig = __DIR__ . '/Config/ldap.php';
         $this->publishConfig($ldapConfig);
     }
 
