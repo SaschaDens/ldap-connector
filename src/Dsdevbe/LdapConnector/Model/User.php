@@ -38,6 +38,16 @@ class User implements Authenticatable
     }
 
     /**
+     * Get the name of the unique identifier for the user.
+     *
+     * @return string
+     */
+    public function getAuthIdentifierName()
+    {
+        return $this->_authIdentifier;
+    }
+
+    /**
      * Get the unique identifier for the user.
      *
      * @return mixed

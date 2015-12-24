@@ -20,7 +20,11 @@ Provides an solution for authentication users with LDAP for Laravel 5.x. It uses
 1. Change the authentication driver in the Laravel config to use the ldap driver. You can find this in the following file `config/auth.php`
 
     ```php
-    'driver' => 'ldap',
+    'providers' => [
+        'users' => [
+            'driver' => 'ldap',
+        ],
+    ],
     ```
 1. Publish a new configuration file with `php artisan vendor:publish` in the configuration folder of Laravel you will find `config/ldap.php` and modify to your needs. For more detail of the configuration you can always check on [ADLAP documentation](http://adldap.sourceforge.net/wiki/doku.php?id=documentation_configuration)
     
@@ -62,7 +66,26 @@ By default `App\Http\Controllers\Auth\AuthController` checks for the `email` fie
 protected $username = 'username';
 ```
 
-Laravel documentation: [Authentication Quickstart](http://laravel.com/docs/master/authentication#authentication-quickstart)
+When you're using `php artisan make:auth` Laravel will create some default views out of the box. If you want to use them with Ldap-connector just change the `email` field to `username` in the following file `resources/views/auth/login.blade.php`
+
+Example:
+```html
+<div class="form-group{{ $errors->has('username') ? ' has-error' : '' }}">
+    <label class="col-md-4 control-label">Username</label>
+
+    <div class="col-md-6">
+        <input type="text" class="form-control" name="username" value="{{ old('username') }}">
+
+        @if ($errors->has('username'))
+            <span class="help-block">
+                <strong>{{ $errors->first('username') }}</strong>
+            </span>
+        @endif
+    </div>
+</div>
+```
+
+For more information about the Authentication you can use the Laravel documentation: [Authentication Quickstart](http://laravel.com/docs/master/authentication#authentication-quickstart)
 
 ### Ldap Groups
 - `Auth::user()->getGroups()` returns `array` with groups the current user belongs to. 
@@ -73,3 +96,6 @@ Laravel documentation: [Authentication Quickstart](http://laravel.com/docs/maste
 - `Auth::user()->getFirstname()` returns authenticated first name.
 - `Auth::user()->getLastname()` returns authenticated last name.
 - `Auth::user()->getEmail()` returns authenticated email address.
+
+## Contributing
+Feel free to contribute to this project for new features or bug fixes. We are open for improvements!

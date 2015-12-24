@@ -4,7 +4,6 @@ namespace Dsdevbe\LdapConnector;
 
 use Auth;
 use Dsdevbe\LdapConnector\Adapter\Adldap;
-use Illuminate\Auth\Guard;
 use Illuminate\Support\ServiceProvider;
 
 class LdapConnectorServiceProvider extends ServiceProvider
@@ -23,13 +22,12 @@ class LdapConnectorServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Auth::extend('ldap', function($app) {
+        Auth::provider('ldap', function ($app, array $config) {
             $ldap = new Adldap(
                 $this->getLdapAdapterConfig('adldap')
             );
-            $provider = new LdapUserProvider($ldap);
 
-            return new Guard($provider, $app['session.store']);
+            return new LdapUserProvider($ldap);
         });
     }
 
