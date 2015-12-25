@@ -3,6 +3,7 @@
 namespace Dsdevbe\LdapConnector\Model;
 
 use Illuminate\Contracts\Auth\Authenticatable;
+use Adldap\Models\User as adLDAPUserModel;
 
 class User implements Authenticatable
 {
@@ -22,15 +23,14 @@ class User implements Authenticatable
     protected $_rememberToken;
 
     /**
-     * @var array
+     * @var adLDAPUserModel
      */
-    protected $_groups;
+    protected $_adLDAP;
 
     /**
-     * @var array
+     * User constructor.
+     * @param array $attributes
      */
-    protected $_user;
-
     public function __construct(array $attributes)
     {
         $this->_authIdentifier = $attributes['username'];
@@ -95,66 +95,22 @@ class User implements Authenticatable
     }
 
     /**
-     * @return array
+     * @return adLDAPUserModel
      */
-    public function getGroups()
+    public function getAdLDAP()
     {
-        return $this->_groups;
+        return $this->_adLDAP;
     }
 
     /**
-     * @param array $groups
+     * @param adLDAPUserModel $userModel
+     *
+     * @return $this
      */
-    public function setGroups(array $groups)
+    public function setUserInfo(adLDAPUserModel $userModel)
     {
-        $this->_groups = $groups;
-    }
+        $this->_adLDAP = $userModel;
 
-    /**
-     * @return bool
-     */
-    public function inGroup($groupName)
-    {
-        return in_array($groupName, $this->_groups);
-    }
-
-    /**
-     * @param array $user
-     */
-    public function setUserInfo(array $user)
-    {
-        $this->_user = $user;
-    }
-
-    /**
-     * @return string
-     */
-    public function getUsername()
-    {
-        return $this->_user['username'];
-    }
-
-    /**
-     * @return string
-     */
-    public function getFirstname()
-    {
-        return $this->_user['firstname'];
-    }
-
-    /**
-     * @return string
-     */
-    public function getLastname()
-    {
-        return $this->_user['lastname'];
-    }
-
-    /**
-     * @return string
-     */
-    public function getEmail()
-    {
-        return $this->_user['email'];
+        return $this;
     }
 }

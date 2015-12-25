@@ -4,6 +4,7 @@ namespace Dsdevbe\LdapConnector;
 
 use Auth;
 use Dsdevbe\LdapConnector\Adapter\Adldap;
+use Dsdevbe\LdapConnector\Exception\MissingConfiguration;
 use Illuminate\Support\ServiceProvider;
 
 class LdapConnectorServiceProvider extends ServiceProvider
@@ -23,11 +24,12 @@ class LdapConnectorServiceProvider extends ServiceProvider
     public function boot()
     {
         Auth::provider('ldap', function ($app, array $config) {
-            $ldap = new Adldap(
-                $this->getLdapAdapterConfig('adldap')
-            );
+            if (!$this->hasLdapConfiguration($config)) {
+                throw new MissingConfiguration('Please check if your configuration is available in config/auth.php');
+            }
+            $ldap = new Adldap($app['hash'], $config['adldap']);
 
-            return new LdapUserProvider($ldap);
+            return new LdapUserProvider($app['hash'], $ldap);
         });
     }
 
@@ -38,8 +40,6 @@ class LdapConnectorServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $ldapConfig = __DIR__ . '/Config/ldap.php';
-        $this->publishConfig($ldapConfig);
     }
 
     /**
@@ -52,32 +52,13 @@ class LdapConnectorServiceProvider extends ServiceProvider
         return ['auth'];
     }
 
-    protected function publishConfig($configPath)
-    {
-        $this->publishes([
-            $configPath => config_path('ldap.php'),
-        ]);
-    }
-
     /**
-     * Get ldap configuration.
+     * @param $config
      *
-     * @return array
+     * @return bool
      */
-    public function getLdapConfig()
+    protected function hasLdapConfiguration($config)
     {
-        return $this->app['config']->get('ldap');
-    }
-
-    /**
-     * @param $pluginName
-     *
-     * @return array
-     */
-    public function getLdapAdapterConfig($pluginName)
-    {
-        $pluginsConfig = $this->app['config']->get('ldap.plugins');
-
-        return $pluginsConfig[$pluginName];
+        return isset($config['adldap']) && is_array($config['adldap']);
     }
 }

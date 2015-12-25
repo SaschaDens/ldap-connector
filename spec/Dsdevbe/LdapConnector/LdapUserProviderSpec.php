@@ -33,7 +33,6 @@ class LdapUserProviderSpec extends ObjectBehavior
         $identifier = 'john.doe@example.com';
 
         $interface->getUserInfo($identifier)->shouldBeCalled();
-
         $this->retrieveById($identifier);
     }
 }

@@ -2,19 +2,27 @@
 
 namespace Dsdevbe\LdapConnector;
 
+use Arr;
 use Dsdevbe\LdapConnector\Adapter\LdapInterface;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\UserProvider as UserProviderInterface;
+use Illuminate\Contracts\Hashing\Hasher as HasherContract;
 
 class LdapUserProvider implements UserProviderInterface
 {
+    /**
+     * @var HasherContract
+     */
+    protected $_hasher;
+
     /**
      * @var LdapInterface;
      */
     protected $_adapter;
 
-    public function __construct(LdapInterface $adapter)
+    public function __construct(HasherContract $hasher, LdapInterface $adapter)
     {
+        $this->_hasher = $hasher;
         $this->_adapter = $adapter;
     }
 
@@ -27,6 +35,10 @@ class LdapUserProvider implements UserProviderInterface
      */
     public function retrieveById($identifier)
     {
+        if (is_array($identifier)) {
+            $identifier = Arr::get($identifier, 0);
+        }
+
         return $this->_adapter->getUserInfo($identifier);
     }
 
@@ -46,9 +58,8 @@ class LdapUserProvider implements UserProviderInterface
     /**
      * Update the "remember me" token for the given user in storage.
      *
-     * @param \Illuminate\Contracts\Auth\Authenticatable $user
-     * @param string                                     $token
-     *
+     * @param  \Illuminate\Contracts\Auth\Authenticatable  $user
+     * @param  string  $token
      * @return void
      */
     public function updateRememberToken(Authenticatable $user, $token)
@@ -68,19 +79,22 @@ class LdapUserProvider implements UserProviderInterface
         $username = $credentials['username'];
         $password = $credentials['password'];
 
-        return ($this->_adapter->connect($username, $password)) ? $this->_adapter->getUserInfo($username) : null;
+        if ($this->_adapter->connect($username, $password)) {
+            return $this->_adapter->getUserInfo($username, $password);
+        }
+
+        return;
     }
 
     /**
      * Validate a user against the given credentials.
      *
-     * @param \Illuminate\Contracts\Auth\Authenticatable $user
-     * @param array                                      $credentials
-     *
+     * @param  \Illuminate\Contracts\Auth\Authenticatable  $user
+     * @param  array  $credentials
      * @return bool
      */
     public function validateCredentials(Authenticatable $user, array $credentials)
     {
-        return $this->_adapter->connect($credentials['username'], $credentials['password']);
+        return $this->_hasher->check($credentials['password'], $user->getAuthPassword());
     }
 }
