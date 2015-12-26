@@ -59,7 +59,7 @@ class LdapUserProvider implements UserProviderInterface
      * Update the "remember me" token for the given user in storage.
      *
      * @param  \Illuminate\Contracts\Auth\Authenticatable  $user
-     * @param  string  $token
+     * @param  string                                      $token
      * @return void
      */
     public function updateRememberToken(Authenticatable $user, $token)
@@ -90,7 +90,7 @@ class LdapUserProvider implements UserProviderInterface
      * Validate a user against the given credentials.
      *
      * @param  \Illuminate\Contracts\Auth\Authenticatable  $user
-     * @param  array  $credentials
+     * @param  array                                       $credentials
      * @return bool
      */
     public function validateCredentials(Authenticatable $user, array $credentials)

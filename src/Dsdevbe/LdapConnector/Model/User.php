@@ -2,8 +2,8 @@
 
 namespace Dsdevbe\LdapConnector\Model;
 
-use Illuminate\Contracts\Auth\Authenticatable;
 use Adldap\Models\User as adLDAPUserModel;
+use Illuminate\Contracts\Auth\Authenticatable;
 
 class User implements Authenticatable
 {
@@ -28,7 +28,6 @@ class User implements Authenticatable
     protected $_adLDAP;
 
     /**
-     * User constructor.
      * @param array $attributes
      */
     public function __construct(array $attributes)

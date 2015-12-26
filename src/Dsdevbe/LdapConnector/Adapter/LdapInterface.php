@@ -15,10 +15,10 @@ interface LdapInterface
     public function connect($username, $password);
 
     /**
-     * @param string $username
-     * @param string $password
+     * @param $username
+     * @param string|null $password
      *
      * @return UserModel
      */
-    public function getUserInfo($username, $password);
+    public function getUserInfo($username, $password = null);
 }

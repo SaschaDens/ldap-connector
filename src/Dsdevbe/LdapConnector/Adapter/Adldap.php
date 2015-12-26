@@ -9,7 +9,6 @@ use Illuminate\Contracts\Hashing\Hasher as HasherContract;
 
 class Adldap implements LdapInterface
 {
-
     /**
      * @var HasherContract
      */
