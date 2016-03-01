@@ -2,37 +2,36 @@
 
 namespace Dsdevbe\LdapConnector\Adapter;
 
-use adLDAP\adLDAP as adLDAPService;
-use adLDAP\collections\adLDAPUserCollection as adLDAPUserCollection;
+use Adldap\Adldap as adLDAPService;
+use Adldap\Models\User as adLDAPUserModel;
 use Dsdevbe\LdapConnector\Model\User as UserModel;
+use Illuminate\Contracts\Hashing\Hasher as HasherContract;
 
 class Adldap implements LdapInterface
 {
+    /**
+     * @var HasherContract
+     */
+    protected $_hasher;
+
+    /**
+     * @var adLDAPService
+     */
     protected $_ldap;
 
+    /**
+     * @var string
+     */
     protected $_username;
 
+    /**
+     * @var string
+     */
     protected $_password;
 
-    protected function mapDataToUserModel(adLDAPUserCollection $user, array $groups)
+    public function __construct(HasherContract $hasher, array $config)
     {
-        $model = new UserModel([
-            'username' => $user->samaccountname,
-            'password' => $this->_password,
-        ]);
-        $model->setGroups($groups);
-        $model->setUserInfo([
-            'username'  => $user->samaccountname,
-            'firstname' => $user->givenname,
-            'lastname'  => $user->sn,
-            'email'     => $user->mail,
-        ]);
-
-        return $model;
-    }
-
-    public function __construct($config)
-    {
+        $this->_hasher = $hasher;
         $this->_ldap = new adLDAPService($config);
     }
 
@@ -44,35 +43,30 @@ class Adldap implements LdapInterface
      */
     public function connect($username, $password)
     {
-        $this->_username = $username;
-        $this->_password = $password;
-
         return $this->_ldap->authenticate($username, $password);
     }
 
     /**
-     * @return bool
-     */
-    public function isConnected()
-    {
-        return (bool) $this->_ldap->getLdapBind();
-    }
-
-    /**
      * @param string $username
+     * @param string $password
      *
      * @return UserModel
      */
-    public function getUserInfo($username)
+    public function getUserInfo($username, $password = null)
     {
-        $user = $this->_ldap->user()->infoCollection($username, ['samaccountname', 'givenname', 'sn', 'mail']);
+        $user = $this->_ldap->search()->where('samaccountname', '=', $username)->first();
 
-        if (!$user) {
-            return;
-        }
+        return $this->mapDataToUserModel($user, $password);
+    }
 
-        $groups = $this->_ldap->user()->groups($username);
+    protected function mapDataToUserModel(adLDAPUserModel $user, $password)
+    {
+        $model = new UserModel([
+            'username' => $user->getAccountName(),
+            'password' => ($password) ? $this->_hasher->make($password) : null,
+        ]);
+        $model->setUserInfo($user);
 
-        return $this->mapDataToUserModel($user, $groups);
+        return $model;
     }
 }

@@ -11,9 +11,10 @@
         }
     ],
     "require": {
-        "php": ">=5.4.0",
+        "php": ">=5.5.9",
+        "ext-ldap": "*",
         "laravel/framework": "~5.0",
-        "adldap2/adldap2": "^4.0"
+        "adldap2/adldap2": "5.2.*"
     },
     "require-dev": {
         "phpspec/phpspec": "^2.2"

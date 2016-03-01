@@ -3,13 +3,14 @@
 namespace spec\Dsdevbe\LdapConnector;
 
 use Dsdevbe\LdapConnector\Adapter\LdapInterface;
+use Illuminate\Contracts\Hashing\Hasher as HasherContract;
 use PhpSpec\ObjectBehavior;
 
 class LdapUserProviderSpec extends ObjectBehavior
 {
-    public function let(LdapInterface $interface)
+    public function let(HasherContract $hasher, LdapInterface $interface)
     {
-        $this->beConstructedWith($interface);
+        $this->beConstructedWith($hasher, $interface);
     }
 
     public function it_is_initializable()
@@ -33,7 +34,6 @@ class LdapUserProviderSpec extends ObjectBehavior
         $identifier = 'john.doe@example.com';
 
         $interface->getUserInfo($identifier)->shouldBeCalled();
-
         $this->retrieveById($identifier);
     }
 }
