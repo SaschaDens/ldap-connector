@@ -13,7 +13,7 @@ Provides an solution for authentication users with LDAP for Laravel 5.x. It uses
 ## Laravel 5.1 - 5.0
 1. Install this package through Composer
     ```js
-    composer require dsdevbe/3.*
+        "dsdevbe/ldap-connector": "3.0.*"
     ```
     
 1. Add the service provider in the app configuration by opening `config/app.php`, and add a new item to the providers array.
@@ -82,7 +82,7 @@ Laravel documentation: [Authentication Quickstart](http://laravel.com/docs/maste
 ## Laravel 5.2 - ...
 1. Install this package through Composer
     ```js
-    composer require dsdevbe/4.0.*
+        "dsdevbe/ldap-connector": "4.0.*"
     ```
     
 1. Add the service provider in the app configuration by opening `config/app.php`, and add a new item to the providers array.
