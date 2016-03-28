@@ -13,7 +13,7 @@
     "require": {
         "php": ">=5.4.0",
         "laravel/framework": "~5.0",
-        "adldap2/adldap2": "^4.0"
+        "adldap2/adldap2": "~4.0"
     },
     "require-dev": {
         "phpspec/phpspec": "^2.2"
