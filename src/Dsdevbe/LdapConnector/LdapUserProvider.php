@@ -80,9 +80,7 @@ class LdapUserProvider implements UserProviderInterface
         $username = $credentials['username'];
         $password = $credentials['password'];
 
-        if ($this->_adapter->connect($username, $password)) {
-            return $this->_adapter->getUserInfo($username, $password);
-        }
+        return $this->_adapter->getUserInfo($username, $password);
     }
 
     /**
