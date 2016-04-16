@@ -29,7 +29,7 @@ class LdapConnectorServiceProvider extends ServiceProvider
             }
             $ldap = new Adldap($app['hash'], $config['adldap']);
 
-            return new LdapUserProvider($app['hash'], $ldap);
+            return new LdapUserProvider($ldap);
         });
     }
 
