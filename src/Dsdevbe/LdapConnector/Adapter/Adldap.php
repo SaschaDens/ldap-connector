@@ -59,6 +59,14 @@ class Adldap implements LdapInterface
         return $this->mapDataToUserModel($user, $password);
     }
 
+    /**
+     * @return bool
+     */
+    public function isConnectedToLdap()
+    {
+        return $this->_ldap->getConnection()->isBound();
+    }
+
     protected function mapDataToUserModel(adLDAPUserModel $user, $password)
     {
         $model = new UserModel([

@@ -21,4 +21,9 @@ interface LdapInterface
      * @return UserModel
      */
     public function getUserInfo($username, $password = null);
+
+    /**
+     * @return bool
+     */
+    public function isConnectedToLdap();
 }

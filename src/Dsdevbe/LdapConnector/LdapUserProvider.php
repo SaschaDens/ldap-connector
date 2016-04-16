@@ -6,23 +6,16 @@ use Arr;
 use Dsdevbe\LdapConnector\Adapter\LdapInterface;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\UserProvider as UserProviderInterface;
-use Illuminate\Contracts\Hashing\Hasher as HasherContract;
 
 class LdapUserProvider implements UserProviderInterface
 {
-    /**
-     * @var HasherContract
-     */
-    protected $_hasher;
-
     /**
      * @var LdapInterface;
      */
     protected $_adapter;
 
-    public function __construct(HasherContract $hasher, LdapInterface $adapter)
+    public function __construct(LdapInterface $adapter)
     {
-        $this->_hasher = $hasher;
         $this->_adapter = $adapter;
     }
 
@@ -77,10 +70,10 @@ class LdapUserProvider implements UserProviderInterface
      */
     public function retrieveByCredentials(array $credentials)
     {
-        $username = $credentials['username'];
-        $password = $credentials['password'];
+        if ($this->_adapter->isConnectedToLdap()) {
+            $username = $credentials['username'];
+            $password = $credentials['password'];
 
-        if ($this->_adapter->connect($username, $password)) {
             return $this->_adapter->getUserInfo($username, $password);
         }
     }
@@ -95,6 +88,6 @@ class LdapUserProvider implements UserProviderInterface
      */
     public function validateCredentials(Authenticatable $user, array $credentials)
     {
-        return $this->_hasher->check($credentials['password'], $user->getAuthPassword());
+        return $this->_adapter->connect($credentials['username'], $credentials['password']);
     }
 }
