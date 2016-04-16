@@ -9,7 +9,6 @@ use Illuminate\Contracts\Auth\UserProvider as UserProviderInterface;
 
 class LdapUserProvider implements UserProviderInterface
 {
-
     /**
      * @var LdapInterface;
      */
