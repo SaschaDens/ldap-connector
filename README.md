@@ -1,5 +1,5 @@
 # Ldap-connector
-[![Build Status](https://travis-ci.org/SaschaDens/ldap-connector.svg)](https://travis-ci.org/SaschaDens/ldap-connector)
+[![Build Status](https://travis-ci.org/SaschaDens/ldap-connector.svg?branch=master)](https://travis-ci.org/SaschaDens/ldap-connector)
 [![Latest Stable Version](https://poser.pugx.org/dsdevbe/ldap-connector/v/stable)](https://packagist.org/packages/dsdevbe/ldap-connector)
 [![Total Downloads](https://poser.pugx.org/dsdevbe/ldap-connector/downloads)](https://packagist.org/packages/dsdevbe/ldap-connector)
 [![License](https://poser.pugx.org/dsdevbe/ldap-connector/license)](https://packagist.org/packages/dsdevbe/ldap-connector)
