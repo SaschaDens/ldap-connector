@@ -57,7 +57,7 @@ class Adldap implements LdapInterface
         $user = $this->_ldap->search()->where('samaccountname', '=', $username)->first();
 
         if (!$user) {
-            return null;
+            return;
         }
 
         return $this->mapDataToUserModel($user, $password);
