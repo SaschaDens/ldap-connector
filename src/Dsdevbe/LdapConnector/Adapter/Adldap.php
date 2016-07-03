@@ -50,7 +50,7 @@ class Adldap implements LdapInterface
      * @param string $username
      * @param string $password
      *
-     * @return UserModel
+     * @return UserModel|null
      */
     public function getUserInfo($username, $password = null)
     {
