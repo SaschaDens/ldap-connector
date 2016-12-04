@@ -1,3 +1,10 @@
+# Not maintained anymore
+I've created this project during my internship for an easy authentication between various applications within my company. The scope of the ldap-connector was only to authenticate with Laravel to the LDAP server.
+
+In case you're looking for a replacement please checkout [Adldap2-Laravel](https://github.com/Adldap2/Adldap2-Laravel). They have also created the awesome library [Adldap2](https://github.com/Adldap2/Adldap2) which ldap-connector was using.
+
+I'll stop maintaining this project but would like to thank all the people that contributed or used this project.
+
 # Ldap-connector
 [![Build Status](https://travis-ci.org/SaschaDens/ldap-connector.svg?branch=master)](https://travis-ci.org/SaschaDens/ldap-connector)
 [![Latest Stable Version](https://poser.pugx.org/dsdevbe/ldap-connector/v/stable)](https://packagist.org/packages/dsdevbe/ldap-connector)
